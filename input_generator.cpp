@@ -59,7 +59,6 @@ void disease_helper(string genome,vector<pair<string,string>> names, int &n) {
         cout << genome << "\n";
         string mutant = genome;
         mutant[rand() % mutant.size()] = alpha[rand() % 4];
-        day += 7;
         for (size_t newPatient = 0; newPatient < rand() % 3; newPatient++)
         {
             newlyInfected.push_back({ names_list[rand() % names_list.size()] , names_list[rand() % names_list.size()] });
@@ -67,6 +66,7 @@ void disease_helper(string genome,vector<pair<string,string>> names, int &n) {
         disease_helper(mutant,newlyInfected, n);
     }
     n--;
+    day += 7;
 }
 
 int main(int argc, char** argv) {
@@ -77,7 +77,7 @@ int main(int argc, char** argv) {
 
     for (size_t i = 0; i < people; i++)
     {
-        names.push_back({ names_list[rand() % names_list.size()] , names_list[rand() % names_list.size()] });
+        names[i] = { names_list[rand() % names_list.size()] , names_list[rand() % names_list.size()] };
     }
     
     for (size_t i = 0; i < 32; i++)
@@ -88,3 +88,5 @@ int main(int argc, char** argv) {
     disease_helper(genomeNought,names,n);
     return 0;
 }
+
+// TODO: fix dates
