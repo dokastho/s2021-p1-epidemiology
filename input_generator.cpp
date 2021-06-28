@@ -46,7 +46,7 @@ void date_helper() {
 }
 
 void disease_helper(string genome,vector<pair<string,string>> names, int &n) {
-    srand(rand());
+    //srand(rand());
     for (size_t i = 0; i < names.size(); i++)
     {
         date_helper();
@@ -73,7 +73,7 @@ void disease_helper(string genome,vector<pair<string,string>> names, int &n) {
 }
 
 int main(int argc, char** argv) {
-    srand(atoi(argv[2]));
+    srand(time(0));
     int n = atoi(argv[1]); // generations of mutations
     int people = 6; // TODO: make number of people variable
     vector<pair<string,string>> names(people); 
