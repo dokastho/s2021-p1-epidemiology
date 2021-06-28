@@ -77,6 +77,8 @@ int main(int argc, char** argv) {
     vector<pair<string,string>> names(people); 
     string genomeNought;
 
+    srand(1);
+
     for (size_t i = 0; i < people; i++)
     {
         names[i] = { names_list[rand() % names_list.size()] , names_list[rand() % names_list.size()] };
@@ -91,4 +93,4 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-// TODO: fix dates, fix mutation decrement
+// TODO: fix random
