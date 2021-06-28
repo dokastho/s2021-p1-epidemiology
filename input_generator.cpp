@@ -17,7 +17,7 @@ int month = 1, day = 1, year = 2021;
 
 // lets say that mutations take place on charicteristic timescales of a week
 void date_helper() {
-    int infectDay = day + rand() % 7;
+    int infectDay = rand() % 7;
     day += infectDay;
     if (day > 30)
     {
@@ -46,27 +46,29 @@ void date_helper() {
 }
 
 void disease_helper(string genome,vector<pair<string,string>> names, int &n) {
-    if (n <= 0)
-    {
-        return;
-    }
-    
     vector<pair<string,string>> newlyInfected;
     for (size_t i = 0; i < names.size(); i++)
     {
         date_helper();
         cout << names[i].first << " " << names[i].second << " ";
         cout << genome << "\n";
+        
+        if (n == 0)
+        {
+            continue;
+        }
         string mutant = genome;
         mutant[rand() % mutant.size()] = alpha[rand() % 4];
         for (size_t newPatient = 0; newPatient < rand() % 3; newPatient++)
         {
             newlyInfected.push_back({ names_list[rand() % names_list.size()] , names_list[rand() % names_list.size()] });
         }
+        day += 7;
+        n--;
         disease_helper(mutant,newlyInfected, n);
+        n++;
+        day -= 7;
     }
-    n--;
-    day += 7;
 }
 
 int main(int argc, char** argv) {
@@ -89,4 +91,4 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-// TODO: fix dates
+// TODO: fix dates, fix mutation decrement

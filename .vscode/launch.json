@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}/input",
-            "args": ["4"," >"," basic-input.txt"],
+            "args": ["1"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
