@@ -22,15 +22,16 @@ void date_helper() {
     day += infectDay;
     if (day > 30)
     {
-        day = day % 30;
+        day -= 30;
         month++;
         if (month > 12)
         {
-            month = month % 12;
+            month -= 12;
             year++;
             cout << month << "/" << day << "/" << year << " ";
             month += 11;
             year--;
+            day += (30 - infectDay);
         }
         else
         {
