@@ -70,15 +70,13 @@ int main(int argc, char** argv) {
     string genomeNought;
     disease eecs_flu;
     
-    srand(atoi(argv[2]));
-    if (argc > 4)
+    // srand(atoi(argv[2])); // optional manual seeding for debugging purposes, don't
+    // //                       forget to change 3 to 4 if uncommented
+    if (argc > 3)
     {
         cerr << "Invalid number of parameters\n";
         return 1;
     }
-    
-
-    srand(1);
 
     for (size_t i = 0; i < people; i++)
     {
