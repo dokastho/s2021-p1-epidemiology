@@ -51,7 +51,14 @@ void disease::spread_and_mutate(string genome,vector<pair<string,string>> names,
         vector<pair<string,string>> newlyInfected;
         string mutant = genome;
         mutant[rand() % mutant.size()] = alpha[rand() % 4];
-        for (int newPatient = 0; newPatient < rand() % 5; newPatient++)
+
+        int r_nought = rand() % 5;
+        if (rand() % 10 == 0)
+        {
+            r_nought = r_nought * rand() % 10;
+        }
+
+        for (int newPatient = 0; newPatient < r_nought; newPatient++)
         {
             newlyInfected.push_back({ names_list[rand() % names_list.size()] , names_list[rand() % names_list.size()] });
         }
