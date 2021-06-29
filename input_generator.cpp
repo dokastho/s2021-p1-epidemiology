@@ -64,13 +64,14 @@ void disease::spread_and_mutate(string genome,vector<pair<string,string>> names,
 }
 
 int main(int argc, char** argv) {
-    srand((uint32_t)time(0));
     int n = atoi(argv[1]); // generations of mutations
     size_t people = 6; // TODO: make number of people variable
     vector<pair<string,string>> names(people); 
     string genomeNought;
     disease eecs_flu;
-    if (argc > 3)
+    
+    srand(atoi(argv[2]));
+    if (argc > 4)
     {
         cerr << "Invalid number of parameters\n";
         return 1;

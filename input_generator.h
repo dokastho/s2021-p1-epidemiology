@@ -21,7 +21,9 @@ class disease {
     int month, day, year;
     public:
 
-    disease() : month(1),day(1),year(2021) {};
+    disease() : month(1),day(1),year(2021) {
+        srand((uint32_t)time(0));
+    };
 
     void date_helper(int delta);
 
