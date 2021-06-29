@@ -11,7 +11,8 @@ using namespace std;
 const vector<string> names_list = {"Tony","Jimmy","Perez","Michael","Chris","John","Sergio",
                             "Philip","David","Paul","Mark","James","Andrew","Stuart",
                             "Gary","Kevin","Charles","Peter","Darren","George","Kenneth",
-                            "Allan","Simon","Adam"};
+                            "Allan","Simon","Adam","Bill","Jack","Thomas","Brian",
+                            "Bob","Dylan","Felix"};
 const string alpha = "augc";
 int month = 1, day = 1, year = 2021;
 
@@ -95,4 +96,4 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-// TODO: fix random
+// TODO: fix days
