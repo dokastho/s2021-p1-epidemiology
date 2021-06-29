@@ -35,4 +35,4 @@ clean:
 $(WRAP): $(WRAPFILES)
 	rm -f $(WRAPFILES)
 input:
-	g++ -g3 -DNDEBUG input_generator.cpp -o input_generator
+	$(CXX) $(CXXFLAGS) input_generator.cpp -o input_generator
