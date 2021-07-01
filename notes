@@ -1,0 +1,3 @@
+- if someone gets the disease, it is assumed they got it from the last person that tested for the most similar varaint
+- dp the distances from each varaint to the next, nested loop
+- keep a vector of people to keep track of how many infections they've caused
