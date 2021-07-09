@@ -3,87 +3,81 @@
 // a basic script to write some input files, I'm sure it'll get progressively 
 // more complicated as I need longer files
 
-#include "input_generator.h"
+#include <iostream>
+#include <vector>
 
 using namespace std;
 
+const vector<string> names_list = {"Tony","Jimmy","Perez","Michael","Chris","John","Sergio",
+                            "Philip","David","Paul","Mark","James","Andrew","Stuart",
+                            "Gary","Kevin","Charles","Peter","Darren","George","Kenneth",
+                            "Allan","Simon","Adam"};
+const string alpha = "augc";
+int month = 1, day = 1, year = 2021;
+
 // lets say that mutations take place on charicteristic timescales of a week
-void disease::date_helper(int delta) {
-    day += delta;
+void date_helper() {
+    int infectDay = rand() % 7;
+    day += infectDay;
     if (day > 30)
     {
-        day -= 30;
+        day = day % 30;
         month++;
         if (month > 12)
         {
-            month -= 12;
+            month = month % 12;
             year++;
-        }
-        
-    }
-    else if (day < 1)
-    {
-        day += 30;
-        month--;
-        if (month < 1)
-        {
-            month += 12;
+            cout << month << "/" << day << "/" << year << " ";
+            month += 11;
             year--;
         }
+        else
+        {
+            cout << month << "/" << day << "/" << year << " ";
+            day += (30 - infectDay);
+            month--;
+        }
+    }
+    else
+    {
+        cout << month << "/" << day << "/" << year << " ";
+        day -= infectDay;
     }
 }
 
-void disease::spread_and_mutate(string genome,vector<pair<string,string>> names, int &n) {
-    //srand(rand());
+void disease_helper(string genome,vector<pair<string,string>> names, int &n) {
+    vector<pair<string,string>> newlyInfected;
     for (size_t i = 0; i < names.size(); i++)
     {
-        int random_day = rand() % 7;
-        date_helper(random_day);
-        cout << month << "/" << day << "/" << year << " ";
+        date_helper();
         cout << names[i].first << " " << names[i].second << " ";
         cout << genome << "\n";
-        date_helper(-1 * random_day);
         
         if (n == 0)
         {
             continue;
         }
-        vector<pair<string,string>> newlyInfected;
         string mutant = genome;
         mutant[rand() % mutant.size()] = alpha[rand() % 4];
-
-        int r_nought = rand() % 5;
-        if (rand() % 10 == 0)
-        {
-            r_nought = r_nought * rand() % 10;
-        }
-
-        for (int newPatient = 0; newPatient < r_nought; newPatient++)
+        for (size_t newPatient = 0; newPatient < rand() % 3; newPatient++)
         {
             newlyInfected.push_back({ names_list[rand() % names_list.size()] , names_list[rand() % names_list.size()] });
         }
-        date_helper(7);
+        day += 7;
         n--;
-        spread_and_mutate(mutant,newlyInfected, n);
+        disease_helper(mutant,newlyInfected, n);
         n++;
-        date_helper(-7);
+        day -= 7;
     }
 }
 
 int main(int argc, char** argv) {
     int n = atoi(argv[1]); // generations of mutations
-    size_t people = 6; // TODO: make number of people variable
+    int people = 4; // TODO: make number of people variable
     vector<pair<string,string>> names(people); 
     string genomeNought;
-    disease eecs_flu;
-    
-    // srand(atoi(argv[2])); // optional manual seeding for debugging purposes, don't
-    // //                       forget to change 3 to 4 if uncommented
-    if (argc > 3)
-    {
-        cerr << "Invalid number of parameters\n";
-        return 1;
-    }
+
+    srand(1);
 
     for (size_t i = 0; i < people; i++)
     {
@@ -95,8 +89,6 @@ int main(int argc, char** argv) {
         genomeNought.push_back(alpha[rand() % 4]);
     }
     
-    eecs_flu.spread_and_mutate(genomeNought,names,n);
+    disease_helper(genomeNought,names,n);
     return 0;
 }
-
-// TODO: fix days

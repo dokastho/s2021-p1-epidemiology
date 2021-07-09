@@ -25,3 +25,5 @@ int disease_tracker::distance_matrix(person &p1, person &p2)
     }
     return memo[low][high];
 }
+
+// want to make the memo based on genome ID's, want to make genome ID's short
