@@ -4,17 +4,52 @@
 #define EPI_H
 
 #include <vector>
+#include <set>
 #include <unordered_map>
 #include <iostream>
 
 using namespace std;
 
+// const string disease_art = 
+// "              .\n"
+// "           ,'/ \`.\n"
+// "          |\/___\/|\n"
+// "          \'\   /`/\n"
+// "           `.\ /,'\n"
+// "              |\n"
+// "              |\n"
+// "             |=|\n"
+// "        /\  ,|=|.  /\\n"
+// "    ,'`.  \/ |=| \/  ,'`.\n"
+// "  ,'    `.|\ `-' /|,'    `.\n"
+// ",'   .-._ \ `---' / _,-.   `.\n"
+// "   ,'    `-`-._,-'-'    `.\n"
+// "  '                       `\n";
+
+struct date {
+    int m,d,y;
+    bool operator<(date rhs) {
+        if (this->y < rhs.y)
+        {
+            return true;
+        }
+        else if (this->m < rhs.m)
+        {
+            return true;
+        }
+        else if (this->d < rhs.d)
+        {
+            return true;
+        }
+         return false;
+    }
+};
 struct person {
     int transmission;
-    tm date;
+    date timepoint;
     string name;
-    person(tm date_in, string name_in) : 
-           date(date_in), name(name_in), transmission(0){};
+    person(date date_in, string name_in) : 
+           transmission(0), timepoint(date_in), name(name_in){};
 };
 
 class disease_tracker {
@@ -31,16 +66,24 @@ class disease_tracker {
         }
     }
 
-    int distance_helper(string genome1, string genome2);
+    void compute_stats();
+
+    size_t distance_helper(string genome1, string genome2);
     
-    int distance_matrix(string genome1, string genome2);
+    size_t distance_matrix(string genome1, string genome2);
 
     string find_nearest(string mutant, bool pre);
 
+    string find_most_infectious();
+
     size_t mutation_popularity(string genome);
 
-    string remove_max();
+    size_t mutation_count();
 
-    bool dateComp(tm t1, tm t2);
+    size_t infection_count();
+
+    bool dateComp(date t1, date t2);
+
+    double r_nought();
 };
 #endif

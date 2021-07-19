@@ -5,23 +5,34 @@
 
 int main() {
     unordered_map<string,vector<person>> eecsStudents;
-    vector<string> eecsFluMutations;
+    set<string> eecsFluMutations;
     string firstName, lastName, genome;
-    tm date;
-    while (cin >> get_time(&date,"%m/%d/%Y") >> firstName >> lastName >> genome)
+    date timepoint;
+    char dash = '/';
+    while (cin >> timepoint.m >> dash >> timepoint.d >> dash >> timepoint.y >> firstName >> lastName >> genome)
     {
-        string name = firstName + lastName;
-        person p(date,name);
+        string name = firstName + " " + lastName;
+        person p(timepoint,name);
         eecsStudents[genome].push_back(p);
-        eecsFluMutations.push_back(genome);
+        eecsFluMutations.insert(genome);
+    }
+    if (eecsFluMutations.size() == 0)
+    {
+        cerr << "Invalid input file\n";
+        return 1;
     }
     
-    disease_tracker eecs_flu_tracker(eecsStudents,eecsFluMutations);
+    vector<string> vec(eecsFluMutations.begin(),eecsFluMutations.end());
+
+    disease_tracker eecs_flu_tracker(eecsStudents,vec);
+    eecs_flu_tracker.compute_stats();
+    
     return 0;
 }
 
 // todo
-// moving average r nought
 // how it'd change when worst, first person is removed
 // how many people get infected
-// other stats
+// worst mutation (the one with the most infections). for now list genome and # of cases
+// number of mutations
+// r nought

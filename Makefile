@@ -34,5 +34,3 @@ clean:
 	rm -Rf *.dSYM
 $(WRAP): $(WRAPFILES)
 	rm -f $(WRAPFILES)
-input:
-	$(CXX) $(CXXFLAGS) input_generator.cpp -o input_generator

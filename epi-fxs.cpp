@@ -2,9 +2,21 @@
 // 6/26/2021
 #include "epi-fxs.h"
 
-int disease_tracker::distance_helper(string genome1, string genome2)
+void disease_tracker::compute_stats()
 {
-    int diff = 0;
+    // cout << disease_art;
+    string line(64,'=');
+    cout << "Disease Statistics:\n" << line << "\n";
+    cout << "Original genome sequence:\t" << gene_pool.front() << "\n";
+    cout << "Most infectious sequence:\t" << this->find_most_infectious() << "\n";
+    cout << "Number of mutations:\t\t" << this->mutation_count() << "\n";
+    cout << "Number of infections:\t\t" << this->infection_count() << "\n";
+    cout << "R nought:\t\t\t" << this->r_nought() << "\n";
+}
+
+size_t disease_tracker::distance_helper(string genome1, string genome2)
+{
+    size_t diff = 0;
     for (size_t i = 0; i < genome1.size(); i++)
     {
         if (genome1[i] != genome2[i])
@@ -16,7 +28,7 @@ int disease_tracker::distance_helper(string genome1, string genome2)
     return diff;
 }
 
-int disease_tracker::distance_matrix(string genome1, string genome2)
+size_t disease_tracker::distance_matrix(string genome1, string genome2)
 {
     int j = -1, k = -1;
     for (size_t i = 0; i < gene_pool.size(); i++)
@@ -44,16 +56,16 @@ int disease_tracker::distance_matrix(string genome1, string genome2)
 }
 
 string disease_tracker::find_nearest(string mutant, bool pre) {
-    int minDist = 1e6;
+    size_t minDist = 1e6;
     string closest;
     for (size_t i = 0; i < gene_pool.size(); i++)
     {
-        int dist = this->distance_matrix(mutant,gene_pool[i]);
+        size_t dist = this->distance_matrix(mutant,gene_pool[i]);
         if (dist < minDist)
         {
             if (pre)
             {
-                if (population[mutant].front().date.tm_mday < population[gene_pool[i]].back().date.tm_mday)
+                if (population[mutant].front().timepoint < population[gene_pool[i]].back().timepoint)
                 {
                     minDist = dist;
                     closest = gene_pool[i];
@@ -61,7 +73,7 @@ string disease_tracker::find_nearest(string mutant, bool pre) {
             }
             else
             {
-                if (population[gene_pool[i]].back().date.tm_mday < population[mutant].front().date.tm_mday)
+                if (population[gene_pool[i]].back().timepoint < population[mutant].front().timepoint)
                 {
                     minDist = dist;
                     closest = gene_pool[i];
@@ -83,18 +95,17 @@ size_t disease_tracker::mutation_popularity(string genome) {
     return population[genome].size();
 }
 
-string disease_tracker::remove_max() {
-    string superspreader,genome;
-    int maxCases = 0;
-    for (size_t i = 0; i < gene_pool.size(); i++)
+string disease_tracker::find_most_infectious() {
+    string worstMutation;
+    size_t maxCases = 0;
+    for (size_t gene = 0; gene < gene_pool.size(); gene++)
     {
-        for (size_t j = 0; j < population[gene_pool[i]].size(); j++)
+        for (size_t host = 0; host < population[gene_pool[gene]].size(); host++)
         {
-            if (population[gene_pool[i]][j].transmission > maxCases)
+            if (population[gene_pool[gene]].size() > maxCases)
             {
-                maxCases = population[gene_pool[i]][j].transmission;
-                superspreader = population[gene_pool[i]][j].name;
-                genome = gene_pool[i];
+                maxCases = population[gene_pool[gene]].size();
+                worstMutation = gene_pool[gene];
             }
         }
     }
@@ -106,6 +117,25 @@ string disease_tracker::remove_max() {
     // use dates
 
 
-    return superspreader;
+    return worstMutation;
 }
 
+size_t disease_tracker::mutation_count()
+{
+    return gene_pool.size();
+}
+
+size_t disease_tracker::infection_count()
+{
+    size_t infections = 0;
+    for (size_t genome = 0; genome < gene_pool.size(); genome++)
+    {
+        infections += population[gene_pool[genome]].size();
+    }
+    return infections;
+}
+
+double disease_tracker::r_nought()
+{
+    return (double)this->infection_count() / (double)gene_pool.size();
+}
