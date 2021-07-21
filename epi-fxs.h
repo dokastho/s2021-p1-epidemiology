@@ -55,22 +55,19 @@ struct person {
 class disease_tracker {
     unordered_map<string,vector<person>> population;
     vector<string> gene_pool;
-    vector<vector<size_t>> memo;
     public:
     disease_tracker(unordered_map<string,vector<person>> &ppl_in, vector<string> gene_pool_in) : 
-    population(ppl_in), gene_pool(gene_pool_in) {
-        memo.resize(gene_pool_in.size());
-        for (size_t i = 0; i < ppl_in.size(); i++)
-        {
-            memo[i].resize(i,0);
-        }
-    }
+    population(ppl_in), gene_pool(gene_pool_in) {}
 
     void compute_stats();
 
+    void remove_worst();
+
+    void remove_first();
+
+    void trace();
+
     size_t distance_helper(string genome1, string genome2);
-    
-    size_t distance_matrix(string genome1, string genome2);
 
     string find_nearest(string mutant, bool pre);
 
@@ -84,6 +81,5 @@ class disease_tracker {
 
     bool dateComp(date t1, date t2);
 
-    double r_nought();
 };
 #endif

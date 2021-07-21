@@ -9,9 +9,26 @@ void disease_tracker::compute_stats()
     cout << "Disease Statistics:\n" << line << "\n";
     cout << "Original genome sequence:\t" << gene_pool.front() << "\n";
     cout << "Most infectious sequence:\t" << this->find_most_infectious() << "\n";
-    cout << "Number of mutations:\t\t" << this->mutation_count() << "\n";
-    cout << "Number of infections:\t\t" << this->infection_count() << "\n";
-    cout << "R nought:\t\t\t" << this->r_nought() << "\n";
+    size_t mutations = mutation_count(), infections = infection_count();
+    cout << "Number of mutations:\t\t" << mutations << "\n";
+    cout << "Number of infections:\t\t" << infections << "\n";
+    cout << "R nought:\t\t\t" << (double)infections / (double)mutations << "\n";
+    cout << "Chance of mutation:\t\t" << (double)mutations / (double)infections * 100 << "%\n";
+}
+
+void disease_tracker::remove_first()
+{
+
+}
+
+void disease_tracker::remove_worst()
+{
+    
+}
+
+void disease_tracker::trace()
+{
+
 }
 
 size_t disease_tracker::distance_helper(string genome1, string genome2)
@@ -28,39 +45,12 @@ size_t disease_tracker::distance_helper(string genome1, string genome2)
     return diff;
 }
 
-size_t disease_tracker::distance_matrix(string genome1, string genome2)
-{
-    int j = -1, k = -1;
-    for (size_t i = 0; i < gene_pool.size(); i++)
-    {
-        if (gene_pool[i] == genome1)
-        {
-            j = (int)i;
-        }
-        else if (gene_pool[i] == genome2)
-        {
-            k = (int)i;
-        }
-        if ((j != -1) & (k != -1))
-        {
-            break;
-        }
-    }
-    size_t low = min(j,k), high = max(j,k);
-    if (memo[low][high] == 0)
-    {
-        memo[low][high] = distance_helper(genome1,genome2);
-    }
-
-    return memo[low][high];
-}
-
 string disease_tracker::find_nearest(string mutant, bool pre) {
     size_t minDist = 1e6;
     string closest;
     for (size_t i = 0; i < gene_pool.size(); i++)
     {
-        size_t dist = this->distance_matrix(mutant,gene_pool[i]);
+        size_t dist = this->distance_helper(mutant,gene_pool[i]);
         if (dist < minDist)
         {
             if (pre)
@@ -133,9 +123,4 @@ size_t disease_tracker::infection_count()
         infections += population[gene_pool[genome]].size();
     }
     return infections;
-}
-
-double disease_tracker::r_nought()
-{
-    return (double)this->infection_count() / (double)gene_pool.size();
 }
