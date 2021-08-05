@@ -7,6 +7,8 @@
 #include <set>
 #include <unordered_map>
 #include <iostream>
+#include <algorithm>
+#include <iterator>
 
 using namespace std;
 
@@ -50,6 +52,10 @@ struct person {
     string name;
     person(date date_in, string name_in) : 
            transmission(0), timepoint(date_in), name(name_in){};
+    bool operator==(person rhs)
+    {
+        return this->name == rhs.name;
+    }
 };
 
 class disease_tracker {
@@ -65,13 +71,15 @@ class disease_tracker {
 
     void remove_first();
 
-    void trace();
+    void trace_and_remove(string gene, person zeroth);
 
     size_t distance_helper(string genome1, string genome2);
 
     string find_nearest(string mutant, bool pre);
 
     string find_most_infectious();
+
+    string find_superspreader();
 
     size_t mutation_popularity(string genome);
 

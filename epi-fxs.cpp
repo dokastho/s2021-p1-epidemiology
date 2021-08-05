@@ -9,7 +9,8 @@ void disease_tracker::compute_stats()
     cout << "Disease Statistics:\n" << line << "\n";
     cout << "Original genome sequence:\t" << gene_pool.front() << "\n";
     cout << "Most infectious sequence:\t" << this->find_most_infectious() << "\n";
-    size_t mutations = mutation_count(), infections = infection_count();
+    cout << "Most infectious superspreader:\t" << this->find_superspreader() << "\n";
+    size_t mutations = this->mutation_count(), infections = infection_count();
     cout << "Number of mutations:\t\t" << mutations << "\n";
     cout << "Number of infections:\t\t" << infections << "\n";
     cout << "R nought:\t\t\t" << (double)infections / (double)mutations << "\n";
@@ -18,7 +19,9 @@ void disease_tracker::compute_stats()
 
 void disease_tracker::remove_first()
 {
-
+    person first = population.begin()->second.front();
+    string gene = population.begin()->first;
+    trace_and_remove(gene, first);
 }
 
 void disease_tracker::remove_worst()
@@ -26,9 +29,28 @@ void disease_tracker::remove_worst()
     
 }
 
-void disease_tracker::trace()
+void disease_tracker::trace_and_remove(string gene, person zeroth)
 {
-
+    string nextMutation = find_nearest(gene,false);
+    if (nextMutation != "")
+    {
+        int buffer = 0;
+        for (auto it = population[gene].begin(); it->name != zeroth.name; it++)
+        {
+            buffer += it->transmission;
+        }
+        
+        for (int i = 0; i < buffer; i++)
+        {
+            trace_and_remove(nextMutation,population[nextMutation][i]);
+        }
+    }
+    
+    // remove the person
+    auto it = find_if(population[gene].begin(),population[gene].end(),person::operator==);
+    // comparison to past-the-end iterator redundant
+    iter_swap(*it,population[gene].end());
+    population[gene].pop_back();
 }
 
 size_t disease_tracker::distance_helper(string genome1, string genome2)
@@ -47,7 +69,7 @@ size_t disease_tracker::distance_helper(string genome1, string genome2)
 
 string disease_tracker::find_nearest(string mutant, bool pre) {
     size_t minDist = 1e6;
-    string closest;
+    string closest = "";
     for (size_t i = 0; i < gene_pool.size(); i++)
     {
         size_t dist = this->distance_helper(mutant,gene_pool[i]);
@@ -108,6 +130,15 @@ string disease_tracker::find_most_infectious() {
 
 
     return worstMutation;
+}
+
+string disease_tracker::find_superspreader()
+{
+    // for (size_t gene = 0; gene < gene_pool.size(); gene++)
+    // {
+        
+    // }
+    return "foo";
 }
 
 size_t disease_tracker::mutation_count()
