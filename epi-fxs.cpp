@@ -59,8 +59,7 @@ size_t disease_tracker::distance_helper(string genome1, string genome2)
     for (size_t i = 0; i < genome1.size(); i++)
     {
         if (genome1[i] != genome2[i])
-        {
-            diff++;
+        { diff++;
         }
         
     }
