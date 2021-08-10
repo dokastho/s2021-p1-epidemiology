@@ -52,10 +52,6 @@ struct person {
     string name;
     person(date date_in, string name_in) : 
            transmission(0), timepoint(date_in), name(name_in){};
-    bool operator==(person rhs)
-    {
-        return this->name == rhs.name;
-    }
 };
 
 class disease_tracker {

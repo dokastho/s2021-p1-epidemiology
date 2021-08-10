@@ -47,10 +47,10 @@ void disease_tracker::trace_and_remove(string gene, person zeroth)
     }
     
     // remove the person
-    auto it = find_if(population[gene].begin(),population[gene].end(),person::operator==);
+    // auto it = find_if(population[gene].begin(),population[gene].end(),[](const person first, const person second) { return first.name == second.name; });
     // comparison to past-the-end iterator redundant
-    iter_swap(*it,population[gene].end());
-    population[gene].pop_back();
+    // iter_swap(*it,population[gene].end());
+    // population[gene].pop_back();
 }
 
 size_t disease_tracker::distance_helper(string genome1, string genome2)
