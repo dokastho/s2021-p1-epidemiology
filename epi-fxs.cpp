@@ -26,7 +26,7 @@ void disease_tracker::remove_first()
 
 void disease_tracker::remove_worst()
 {
-    
+    // not done. might revisit
 }
 
 void disease_tracker::trace_and_remove(string gene, person zeroth)
